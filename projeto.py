@@ -1,1 +1,1 @@
-
+print("situação complicada")
