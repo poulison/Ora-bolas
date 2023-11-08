@@ -1,4 +1,5 @@
 #Paulo Gabriel Gonçalves Leme R.A:24.123.075-4
+#Paulo Andre de Oliveira Hirata R.A:24.123.086-1
 
 # Bibliotecas utilizadas
 from math import *
