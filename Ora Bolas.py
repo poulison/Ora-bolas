@@ -2,21 +2,16 @@
 #Paulo Andre de Oliveira Hirata R.A:24.123.086-1
 #Marjorie Luize Martins Costa R.A:24.123.084-5
 
-# Bibliotecas utilizadas
-from math import *
-from tkinter import *
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-# Função para calcular a distância entre dois pontos (x1, y1) e (x2, y2)
+from math import *
+import matplotlib.pyplot as plt
+
 def calcular_distancia(x1, y1, x2, y2):
     return sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
-# Função para calcular o tempo que o robô vai demorar para chegar na bola
 def calcular_tempo(distancia, velocidade):
     return distancia / velocidade
 
-# Função para encontrar a posição da bola mais perto do robô em Y
 def encontrar_posicao_mais_perto(robo_y, lista_Y):
     posicao_y = None
     for posicao_mais_perto_y in lista_Y:
@@ -24,7 +19,6 @@ def encontrar_posicao_mais_perto(robo_y, lista_Y):
             posicao_y = posicao_mais_perto_y/2
     return posicao_y
 
-# Função para ler o arquivo e retornar listas com os valores
 def ler_arquivo(lista_X,lista_T,lista_Y):
     with open('trajetoria_bola.txt', 'r') as arquivo:
         linhas = arquivo.readlines()
@@ -76,17 +70,19 @@ def calcular_graficos(robo_x, robo_y, posicao_x, posicao_y, tempo_robo_cheguei,
             distancia_inicial_robo, velocidade_inicial_bola, velocidade_final_bola,
             aceleracao_inicial_bola, aceleracao_final_bola)
 
-def calcular_tudo():
-    robo_x = float(entry_x.get())
-    robo_y = float(entry_y.get())
+def calcular_tudo(robo_x, robo_y):
+    lista_Y = []
+    lista_X = []
+    lista_T = []
+    ler_arquivo(lista_X,lista_T,lista_Y)
 
     posicao_y = encontrar_posicao_mais_perto(robo_y, lista_Y)
-    print(f"Posição da bola mais perto do robô: {posicao_y:.3f}")
+    print(f"Posição da bola mais perto do robô: {posicao_y:.3f} cm")
 
-    robo_velocidade=2.8#m/s
-    aceleracao=2.8 #m/s²
-    peso=4.6 #N
-    massa=0.46 # 
+    robo_velocidade = 2.8  # m/s
+    aceleracao = 2.8  # m/s²
+    peso = 4.6  # N
+    massa = 0.46  #
 
     distancia_robo_e_bola = calcular_distancia(robo_x, robo_y, 1.000, posicao_y)
     tempo_robo_cheguei = calcular_tempo(distancia_robo_e_bola, robo_velocidade)
@@ -103,14 +99,14 @@ def calcular_tudo():
      distancia_inicial_robo, velocidade_inicial_bola, velocidade_final_bola,
      aceleracao_inicial_bola, aceleracao_final_bola) = resultados
 
-    print(f"Distância da origem da bola até a interceptação: {distancia_bola:.3f}")
-    print(f"Distância inicial da bola: {distancia_bola_inicial:.3f}")
-    print(f"Distância final da bola: {distancia_bola_final:.3f}")
-    print(f"Distância inicial do robô: {distancia_inicial_robo:.3f}")
-    print(f"Velocidade média inicial da bola: {velocidade_inicial_bola:.3f}")
-    print(f"Velocidade média final da bola: {velocidade_final_bola:.3f}")
-    print(f"Aceleração média inicial da bola: {aceleracao_inicial_bola:.3f}")
-    print(f"Aceleração média final da bola: {aceleracao_final_bola:.3f}")
+    print(f"Distância da origem da bola até a interceptação: {distancia_bola:.3f} cm")
+    print(f"Distância inicial da bola: {distancia_bola_inicial:.3f} cm")
+    print(f"Distância final da bola: {distancia_bola_final:.3f} cm")
+    print(f"Distância inicial do robô: {distancia_inicial_robo:.3f} cm")
+    print(f"Velocidade média inicial da bola: {velocidade_inicial_bola:.3f} m/s")
+    print(f"Velocidade média final da bola: {velocidade_final_bola/10:.3f} m/s")
+    print(f"Aceleração média inicial da bola: {aceleracao_inicial_bola/10:.3f} m/s²")
+    print(f"Aceleração média final da bola: {aceleracao_final_bola/10000:.3f} m/s²")
 
     # Cálculos adicionais para os gráficos
     tempo = lista_T
@@ -161,7 +157,7 @@ def calcular_tudo():
     tempo_aceleracao = [(tempo[i+1] + tempo[i]) / 2 for i in range(len(tempo)-2)]
 
     def calcular_posicao_x(t):
-      return 0.005*t**3 + 1E-13*t**2 + 0.5*t + 1
+        return 0.005*t**3 + 1E-13*t**2 + 0.5*t + 1
 
     def calcular_posicao_y(t):
         return -0.02*t**2 + 0.9*t + 0.5
@@ -177,7 +173,6 @@ def calcular_tudo():
 
     def calcular_aceleracao_y(t):
         return -0.04
-
 
     tempo_grafico = [i/100 for i in range(0, int(tempo_robo_cheguei*100))]
 
@@ -218,32 +213,16 @@ def calcular_tudo():
 
     plt.show()
 
-lista_Y = []
-lista_X = []
-lista_T = []
-ler_arquivo(lista_X,lista_T,lista_Y)
+def obter_posicoes_do_robo():
+    robo_x = float(input("Digite a posição do robô em X: "))
+    robo_y = float(input("Digite a posição do robô em Y: "))
+    return robo_x, robo_y
 
-# Criação da interface gráfica
-root = Tk()
-root.title("Cálculo de Distância do Robô")
+def main():
+    robo_x = float(input("Posição do robô em X (cm): "))
+    robo_y = float(input("Posição do robô em Y (cm): "))
 
-frame = Frame(root)
-frame.pack(pady=20)
+    calcular_tudo(robo_x, robo_y)
 
-label_x = Label(frame, text="Posição do robô em X:")
-label_x.grid(row=0, column=0)
-entry_x = Entry(frame)
-entry_x.grid(row=0, column=1)
-
-label_y = Label(frame, text="Posição do robô em Y:")
-label_y.grid(row=1, column=0)
-entry_y = Entry(frame)
-entry_y.grid(row=1, column=1)
-
-calculate_button = Button(root, text="Calcular", command=calcular_tudo)
-calculate_button.pack(pady=10)
-
-result_label = Label(root, text="")
-result_label.pack()
-
-root.mainloop()
+if __name__ == "__main__":
+    main()
